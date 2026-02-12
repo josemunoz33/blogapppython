@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Login - Blog Demo{% endblock %}
+{% block content %}
+  <div class="card">
+    <h3 style="margin-top:0">Login</h3>
+    <form method="post">
+      <label>Usuario</label>
+      <input type="text" name="username" value="admin">
+      <div style="height:10px"></div>
+      <label>Contraseña</label>
+      <input type="password" name="password" placeholder="admin123 (default)">
+      <div style="height:10px"></div>
+      <button type="submit">Entrar</button>
+    </form>
+    <p class="muted">Usuario por defecto: <code>admin</code>. Password por defecto: <code>admin123</code> (cámbialo con env <code>ADMIN_PASSWORD</code>).</p>
+  </div>
+{% endblock %}

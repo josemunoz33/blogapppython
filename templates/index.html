@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Inicio - Blog Demo{% endblock %}
+{% block content %}
+  {% for p in posts %}
+    <div class="card">
+      <h3 style="margin-top:0">
+        <a href="{{ url_for('post_view', slug=p.slug) }}">{{ p.title }}</a>
+      </h3>
+      <div class="muted">{{ p.created_at.strftime("%Y-%m-%d %H:%M") }} · /p/{{ p.slug }}</div>
+      <p>{{ (p.content[:220] ~ ("..." if p.content|length > 220 else "")) }}</p>
+      <a href="{{ url_for('post_view', slug=p.slug) }}">Leer más →</a>
+    </div>
+  {% else %}
+    <p>No hay posts aún.</p>
+  {% endfor %}
+{% endblock %}

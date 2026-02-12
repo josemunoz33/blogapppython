@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Admin - Blog Demo{% endblock %}
+{% block content %}
+  <div class="card">
+    <h3 style="margin-top:0">Panel Admin</h3>
+    <a href="{{ url_for('new_post') }}">+ Nuevo post</a>
+  </div>
+
+  {% for p in posts %}
+    <div class="card">
+      <h3 style="margin-top:0">{{ p.title }}</h3>
+      <div class="muted">slug: {{ p.slug }} · {{ p.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+      <div style="margin-top: 10px">
+        <a href="{{ url_for('edit_post', post_id=p.id) }}">Editar</a>
+        &nbsp;·&nbsp;
+        <form method="post" action="{{ url_for('delete_post', post_id=p.id) }}" style="display:inline">
+          <button type="submit" onclick="return confirm('¿Eliminar este post?')">Eliminar</button>
+        </form>
+        &nbsp;·&nbsp;
+        <a href="{{ url_for('post_view', slug=p.slug) }}">Ver</a>
+      </div>
+    </div>
+  {% else %}
+    <p>No hay posts.</p>
+  {% endfor %}
+{% endblock %}

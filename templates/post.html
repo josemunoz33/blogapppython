@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - Blog Demo{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0">{{ post.title }}</h2>
+    <div class="muted">{{ post.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+    <p style="white-space: pre-wrap">{{ post.content }}</p>
+  </div>
+
+  <h3>Comentarios</h3>
+  {% for c in comments %}
+    <div class="card">
+      <strong>{{ c.author }}</strong>
+      <div class="muted">{{ c.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+      <div style="white-space: pre-wrap">{{ c.body }}</div>
+    </div>
+  {% else %}
+    <p class="muted">Sé el primero en comentar.</p>
+  {% endfor %}
+
+  <h3>Deja un comentario</h3>
+  <form method="post" class="card">
+    <label>Nombre</label>
+    <input type="text" name="author" placeholder="Tu nombre">
+    <div style="height:10px"></div>
+    <label>Comentario</label>
+    <textarea name="body" placeholder="Escribe algo..."></textarea>
+    <div style="height:10px"></div>
+    <button type="submit">Publicar</button>
+  </form>
+{% endblock %}
