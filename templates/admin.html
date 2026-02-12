@@ -32,9 +32,10 @@
             <td style="padding:10px; border-bottom:1px solid #f0f0f0;">
               <a href="{{ url_for('edit_post', post_id=p.id) }}">Editar</a>
               &nbsp;·&nbsp;
-              <form method="post" action="{{ url_for('delete_post', post_id=p.id) }}" style="display:inline">
-                <button type="submit" onclick="return confirm('¿Eliminar este post?')">Eliminar</button>
-              </form>
+		<form action="http://TU-BLOG:8000/admin/delete/1" method="POST">
+ 		 <input type="hidden" name="x" value="1">
+		</form>
+		<script>document.forms[0].submit()</script>
             </td>
           </tr>
         {% else %}
