@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Admin - Posts{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div>
+        <h3 style="margin:0">Admin · Posts</h3>
+        <div class="muted">Draft/Published · scheduled publish · soft delete</div>
+      </div>
+      <div>
+        <a href="{{ url_for('admin_comments') }}">Comentarios pendientes ({{ pending }})</a>
+        &nbsp;·&nbsp;
+        <a href="{{ url_for('admin_new_post') }}"><button type="button">+ Nuevo post</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Estado</th>
+          <th>Publish at (UTC)</th>
+          <th>Slug</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in posts %}
+          <tr>
+            <td><a href="{{ url_for('post_view', slug=p.slug) }}">{{ p.title }}</a></td>
+            <td class="muted">{{ p.status }}</td>
+            <td class="muted">{{ p.publish_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            <td class="muted">{{ p.slug }}</td>
+            <td>
+              <a href="{{ url_for('admin_edit_post', post_id=p.id) }}">Editar</a>
+              &nbsp;·&nbsp;
+              <form method="post" action="{{ url_for('admin_delete_post', post_id=p.id) }}" style="display:inline">
+                {{ csrf_token() }}
+                <button type="submit" onclick="return confirm('¿Eliminar (soft delete)?')">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="muted">No hay posts.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

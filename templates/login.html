@@ -4,17 +4,14 @@
   <div class="card" style="max-width:520px; margin: 0 auto;">
     <h3 style="margin-top:0">Login</h3>
     <form method="post">
+      {{ form.csrf_token }}
       <label>Usuario</label>
-      <input type="text" name="username" value="admin">
+      {{ form.username(value="admin") }}
       <div style="height:10px"></div>
       <label>Contraseña</label>
-      <input type="password" name="password" placeholder="admin123 (default)">
+      {{ form.password(placeholder="admin123 (si no cambiaste ADMIN_PASSWORD)") }}
       <div style="height:10px"></div>
       <button type="submit">Entrar</button>
     </form>
-    <p class="muted" style="margin-top:12px">
-      Usuario por defecto: <code>admin</code>. Password por defecto: <code>admin123</code>
-      (cámbialo con env <code>ADMIN_PASSWORD</code>).
-    </p>
   </div>
 {% endblock %}

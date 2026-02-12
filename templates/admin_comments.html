@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Admin - Comentarios{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div>
+        <h3 style="margin:0">Admin · Moderación de comentarios</h3>
+        <div class="muted">Aprobar / rechazar / eliminar (old-school)</div>
+      </div>
+      <div><a href="{{ url_for('admin_posts') }}">← Volver a posts</a></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h3 style="margin-top:0">Pendientes</h3>
+        {% for c in pending %}
+          <div style="padding:12px; border:1px solid #e5e7eb; border-radius:12px; margin:12px 0; background:#fafafa;">
+            <div><strong>{{ c.author }}</strong> <span class="muted">en</span> <a href="{{ url_for('post_view', slug=c.post.slug) }}">{{ c.post.title }}</a></div>
+            <div class="muted">{{ c.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+            <div style="white-space: pre-wrap; margin-top:8px">{{ c.body }}</div>
+
+            <div style="margin-top:10px">
+              <form method="post" style="display:inline">
+                {{ form.csrf_token }}
+                <input type="hidden" name="comment_id" value="{{ c.id }}">
+                <input type="hidden" name="action" value="approve">
+                <button type="submit">Aprobar</button>
+              </form>
+
+              <form method="post" style="display:inline">
+                {{ form.csrf_token }}
+                <input type="hidden" name="comment_id" value="{{ c.id }}">
+                <input type="hidden" name="action" value="reject">
+                <button type="submit">Rechazar</button>
+              </form>
+
+              <form method="post" style="display:inline">
+                {{ form.csrf_token }}
+                <input type="hidden" name="comment_id" value="{{ c.id }}">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" onclick="return confirm('¿Eliminar comentario?')">Eliminar</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <p class="muted">No hay comentarios pendientes.</p>
+        {% endfor %}
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Recientes aprobados</h3>
+        {% for c in recent %}
+          <div style="padding:12px; border:1px solid #e5e7eb; border-radius:12px; margin:12px 0;">
+            <div><strong>{{ c.author }}</strong> <span class="muted">en</span> <a href="{{ url_for('post_view', slug=c.post.slug) }}">{{ c.post.title }}</a></div>
+            <div class="muted">{{ c.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+            <div style="white-space: pre-wrap; margin-top:8px">{{ c.body }}</div>
+          </div>
+        {% else %}
+          <p class="muted">Sin comentarios.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <aside class="card">
+      <h3 style="margin-top:0">Tips</h3>
+      <ul class="muted">
+        <li>Patrón “vintage”: moderación manual en admin.</li>
+        <li>CSRF activo para todos los POST (Flask-WTF).</li>
+        <li>Posts con <strong>publish_at</strong> futuro no aparecen en público.</li>
+      </ul>
+    </aside>
+  </div>
+{% endblock %}

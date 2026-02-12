@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin - {{ "Nuevo" if mode=="new" else "Editar" }}{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:860px; margin: 0 auto;">
+    <h3 style="margin-top:0">{{ "Nuevo post" if mode=="new" else "Editar post" }}</h3>
+    <div class="muted">Formato fecha UTC: <code>YYYY-MM-DD HH:MM:SS</code> (opcional).</div>
+    <div style="height:10px"></div>
+
+    <form method="post">
+      {{ form.csrf_token }}
+
+      <label>Título</label>
+      {{ form.title() }}
+      <div style="height:10px"></div>
+
+      <label>Slug (opcional)</label>
+      {{ form.slug() }}
+      <div style="height:10px"></div>
+
+      <label>Tags (coma-separados)</label>
+      {{ form.tags() }}
+      <div style="height:10px"></div>
+
+      <label>Estado</label>
+      {{ form.status() }}
+      <div style="height:10px"></div>
+
+      <label>Publicar en (UTC) - opcional</label>
+      {{ form.publish_at(placeholder="2026-02-12 20:30:00") }}
+      <div style="height:10px"></div>
+
+      <label>Contenido</label>
+      {{ form.content() }}
+
+      <div style="height:10px"></div>
+      <button type="submit">{{ "Crear" if mode=="new" else "Guardar" }}</button>
+      <a href="{{ url_for('admin_posts') }}" style="margin-left:10px">Cancelar</a>
+    </form>
+  </div>
+{% endblock %}

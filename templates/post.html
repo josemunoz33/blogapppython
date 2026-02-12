@@ -6,8 +6,18 @@
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
           <h2 style="margin:0">{{ post.title }}</h2>
-          <span class="badge">{{ post.created_at.strftime("%Y-%m-%d %H:%M") }}</span>
+          <span class="badge">{{ post.publish_at.strftime("%Y-%m-%d %H:%M") }}</span>
         </div>
+        <div class="muted" style="margin-top:6px">{{ post.views }} views · /p/{{ post.slug }}</div>
+
+        {% if post.tags %}
+          <div class="pills" style="margin-top:8px">
+            {% for t in post.tags %}
+              <a href="{{ url_for('tag_view', name=t.name) }}">{{ t.name }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
+
         <p style="white-space: pre-wrap; margin-top:12px">{{ post.content }}</p>
       </div>
 
@@ -27,27 +37,19 @@
       <div class="card">
         <h3 style="margin-top:0">Deja un comentario</h3>
         <form method="post">
+          {{ form.csrf_token }}
           <label>Nombre</label>
-          <input type="text" name="author" placeholder="Tu nombre">
+          {{ form.author() }}
           <div style="height:10px"></div>
           <label>Comentario</label>
-          <textarea name="body" placeholder="Escribe algo..."></textarea>
+          {{ form.body() }}
           <div style="height:10px"></div>
           <button type="submit">Publicar</button>
         </form>
+        <div class="muted" style="margin-top:10px">CSRF protegido con Flask-WTF.</div>
       </div>
     </div>
 
-    <aside class="card">
-      <h3 style="margin-top:0">Últimos posts</h3>
-      {% for p in latest %}
-        <div style="margin:10px 0">
-          <a href="{{ url_for('post_view', slug=p.slug) }}">{{ p.title }}</a><br>
-          <span class="muted">{{ p.created_at.strftime("%Y-%m-%d") }}</span>
-        </div>
-      {% endfor %}
-      <hr style="border:none; border-top:1px solid #e5e7eb; margin:14px 0">
-      <a href="{{ url_for('index') }}">← Volver al inicio</a>
-    </aside>
+    {% include "_sidebar.html" %}
   </div>
 {% endblock %}

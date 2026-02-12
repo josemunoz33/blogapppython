@@ -4,99 +4,50 @@
   <meta charset="utf-8">
   <title>{% block title %}Blog Demo{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Estilo "hace 10 años": CSS simple sin frameworks modernos -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ url_for('feed') }}">
   <style>
-    :root{
-      --bg:#f6f7fb;
-      --card:#ffffff;
-      --text:#1f2430;
-      --muted:#6b7280;
-      --border:#e5e7eb;
-      --link:#1d4ed8;
-    }
-    body{
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin:0;
-    }
-    .wrap{
-      max-width: 980px;
-      margin: 26px auto;
-      padding: 0 18px;
-    }
+    :root{ --bg:#f6f7fb; --card:#fff; --text:#1f2430; --muted:#6b7280; --border:#e5e7eb; --link:#1d4ed8; }
+    body{ font-family: Arial, sans-serif; background:var(--bg); color:var(--text); margin:0; }
+    .wrap{ max-width: 1020px; margin: 24px auto; padding: 0 18px; }
     header{
-      background: var(--card);
-      border:1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      background: var(--card); border:1px solid var(--border); border-radius: 14px;
+      padding: 14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px;
       box-shadow: 0 6px 18px rgba(0,0,0,.04);
     }
-    a{ color: var(--link); text-decoration:none; }
-    a:hover{ text-decoration: underline; }
-    .muted{ color: var(--muted); font-size: .95em; }
-    .grid{
-      display:grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
+    a{ color: var(--link); text-decoration:none; } a:hover{ text-decoration: underline; }
+    .muted{ color: var(--muted); font-size:.95em; }
+    .grid{ display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px; }
     .card{
-      background: var(--card);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding: 16px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.04);
+      background:var(--card); border:1px solid var(--border); border-radius:14px;
+      padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.04);
     }
-    .card h3, .card h2{ margin-top:0; }
     .badge{
-      display:inline-block;
-      font-size:.85em;
-      padding: 4px 10px;
-      border:1px solid var(--border);
-      border-radius:999px;
-      color: var(--muted);
-      background:#fafafa;
+      display:inline-block; font-size:.85em; padding: 4px 10px; border:1px solid var(--border);
+      border-radius:999px; color: var(--muted); background:#fafafa;
     }
-    textarea{ width:100%; min-height: 200px; }
-    input[type=text], input[type=password]{
-      width:100%;
-      padding:10px;
-      border:1px solid var(--border);
-      border-radius:10px;
-      box-sizing: border-box;
+    input[type=text], input[type=password], textarea, select{
+      width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; box-sizing:border-box;
+      font-family: inherit;
     }
+    textarea{ min-height: 200px; }
     button{
-      padding:10px 14px;
-      border:1px solid var(--border);
-      border-radius:10px;
-      background:#fff;
-      cursor:pointer;
+      padding:10px 14px; border:1px solid var(--border); border-radius:10px; background:#fff; cursor:pointer;
     }
     button:hover{ background:#f3f4f6; }
-
     .flash-ok{ background:#e8fff0; border:1px solid #b8f5cd; padding:10px; border-radius:10px; }
     .flash-err{ background:#fff1f1; border:1px solid #ffcccc; padding:10px; border-radius:10px; }
-
     .hero{
-      margin-top:16px;
-      background: linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
-      border:1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.04);
+      margin-top:16px; background: linear-gradient(135deg, #fff 0%, #f3f7ff 100%);
+      border:1px solid var(--border); border-radius:14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.04);
     }
-    .hero h1{ margin:0 0 6px 0; font-size: 30px; }
-    .hero p{ margin:0; color: var(--muted); }
-
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
-    }
+    .hero h1{ margin:0 0 6px 0; font-size: 28px; }
+    .pills a{ display:inline-block; margin:6px 6px 0 0; padding:4px 10px; border:1px solid var(--border); border-radius:999px; background:#fafafa; color: var(--muted); }
+    .pills a:hover{ background:#f3f4f6; text-decoration:none; color: var(--text); }
+    .pagination{ text-align:center; }
+    .pagination a{ margin: 0 10px; }
+    table{ width:100%; border-collapse: collapse; }
+    th, td{ padding:10px; border-bottom:1px solid #f0f0f0; text-align:left; vertical-align:top; }
+    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -104,11 +55,14 @@
     <header>
       <div>
         <h2 style="margin:0"><a href="{{ url_for('index') }}">Blog Demo</a></h2>
-        <div class="muted">Flask clásico + SQLite (modo demo)</div>
+        <div class="muted">Flask “vintage” · Tags · Search · Archive · RSS · Admin</div>
       </div>
       <nav>
-        {% if session.get("user_id") %}
-          <a href="{{ url_for('admin') }}">Admin</a>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('search') }}">Buscar</a>
+        <a href="{{ url_for('feed') }}">RSS</a>
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('admin_posts') }}">Admin</a>
           <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
           <a href="{{ url_for('login') }}">Login</a>
@@ -117,8 +71,8 @@
     </header>
 
     <div class="hero">
-      <h1>Blog Demo</h1>
-      <p>Un mini blog “clásico” (server-rendered) con posts, comentarios y panel admin.</p>
+      <h1>Blog Demo (Vintage)</h1>
+      <p class="muted" style="margin:0">Old-school server rendered: tags, búsqueda LIKE, archivo por fechas, RSS y moderación.</p>
     </div>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -136,7 +90,7 @@
     </main>
 
     <footer class="muted" style="margin-top: 26px">
-      Demo educativa. Persistencia en <code>/data/blog.db</code>.
+      Persistencia: <code>/data/blog.db</code> · RSS: <code>/feed.xml</code>
     </footer>
   </div>
 </body>
