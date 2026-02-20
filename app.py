@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, PostForm, CommentForm, ModerateCommentForm
 
 app = Flask(__name__)
+db.session.execute(f"SELECT * FROM post WHERE title LIKE '%{q}%'")
 
 # Demo default (típico hallazgo si no se cambia en prod)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-me")
