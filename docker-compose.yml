@@ -9,6 +9,7 @@ services:
       DATABASE_URL: "sqlite:////data/blog.db"
       FLASK_APP: "app.py"
       LOG_LEVEL: "INFO"
+      LOG_FORMAT: "json"
       ENABLE_FILE_LOG: "true"
     volumes:
       - blogdata:/data
