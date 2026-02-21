@@ -17,7 +17,7 @@
           </div>
         {% endif %}
 
-        <div style="margin-top:12px; white-space: pre-wrap;">{{ post.content | safe }}</div>
+        <div style="margin-top:12px; white-space: pre-wrap;">{{ post.content }}</div>
       </div>
 
       <div class="card" style="margin-top:16px">
@@ -25,7 +25,7 @@
         {% for c in comments %}
           <div style="padding:10px; border-bottom:1px solid #eef2f7;">
             <strong>{{ c.author }}</strong> <span class="meta">· {{ c.created_at.strftime("%Y-%m-%d %H:%M") }}</span>
-            <div style="white-space: pre-wrap; margin-top:6px">{{ c.body | safe }}</div>
+            <div style="white-space: pre-wrap; margin-top:6px">{{ c.body }}</div>
           </div>
         {% else %}
           <p class="meta">Aún no hay comentarios.</p>

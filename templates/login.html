@@ -8,10 +8,10 @@
     <form method="post">
       {{ form.csrf_token }}
       <label>Usuario</label>
-      {{ form.username(value="admin") }}
+      {{ form.username(autocomplete="username") }}
       <div style="height:10px"></div>
       <label>Contraseña</label>
-      {{ form.password(placeholder="admin123 (si no cambiaste ADMIN_PASSWORD)") }}
+      {{ form.password(autocomplete="current-password") }}
       <div style="height:10px"></div>
       <button class="btn" type="submit">Entrar</button>
     </form>

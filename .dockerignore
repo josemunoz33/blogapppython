@@ -1,0 +1,12 @@
+.git
+.github
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+.env
+.venv/
+venv/
+.DS_Store
