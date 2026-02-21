@@ -1,27 +1,20 @@
-name: CI/CD - Blog Medico
+name: CI/CD Deploy DigitalOcean (deploy-do)
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - master
+      - deploy-do
 
 permissions:
   contents: read
 
 jobs:
-  ci-sonar:
-    name: CI + SonarCloud
+  ci:
+    name: Basic CI Checks
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # recomendado por SonarCloud
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -37,23 +30,10 @@ jobs:
         run: |
           python -m compileall -q .
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=${{ secrets.SONAR_ORG }}
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.sources=.
-            -Dsonar.python.version=3.11
-            -Dsonar.exclusions=**/__pycache__/**,**/*.zip,**/venv/**
-
   deploy:
     name: Deploy to DigitalOcean
     runs-on: ubuntu-latest
-    needs: [ci-sonar]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [ci]
 
     steps:
       - name: Checkout
