@@ -1,27 +1,27 @@
-name: Sonar Scan (master)
+name: CI/CD - Blog Medico
 
 on:
   push:
     branches:
       - master
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - master
-    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
 
 jobs:
-  sonar:
-    name: SonarCloud Scan
+  ci-sonar:
+    name: CI + SonarCloud
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # recomendado por SonarCloud
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -48,3 +48,4 @@ jobs:
             -Dsonar.sources=.
             -Dsonar.python.version=3.11
             -Dsonar.exclusions=**/__pycache__/**,**/*.zip,**/venv/**
+
