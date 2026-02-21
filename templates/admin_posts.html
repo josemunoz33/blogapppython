@@ -36,7 +36,8 @@
             <td>
               <a href="{{ url_for('admin_edit_post', post_id=p.id) }}">Editar</a>
               &nbsp;·&nbsp;
-              <form method="post" action="/admin/delete/1"
+              <form method="post" action="{{ url_for('admin_delete_post', post_id=p.id) }}" style="display:inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button class="btn" type="submit" onclick="return confirm('¿Eliminar (soft delete)?')">Eliminar</button>
               </form>
             </td>

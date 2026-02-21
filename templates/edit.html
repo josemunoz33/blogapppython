@@ -1,23 +1,9 @@
 {% extends "base.html" %}
-{% block title %}{{ "Nuevo" if mode=="new" else "Editar" }} - Blog Demo{% endblock %}
+{% block title %}Editor - Redirección{% endblock %}
 {% block content %}
-  <div class="card" style="max-width:820px; margin: 0 auto;">
-    <h3 style="margin-top:0">{{ "Nuevo post" if mode=="new" else "Editar post" }}</h3>
-    <form method="post">
-      <label>Título</label>
-      <input type="text" name="title" value="{{ post.title if post else '' }}">
-      <div style="height:10px"></div>
-
-      <label>Slug (opcional)</label>
-      <input type="text" name="slug" value="{{ post.slug if post else '' }}" placeholder="se-genera-del-titulo">
-      <div style="height:10px"></div>
-
-      <label>Contenido</label>
-      <textarea name="content">{{ post.content if post else '' }}</textarea>
-
-      <div style="height:10px"></div>
-      <button type="submit">{{ "Crear" if mode=="new" else "Guardar" }}</button>
-      <a href="{{ url_for('admin') }}" style="margin-left:10px">Cancelar</a>
-    </form>
+  <div class="card">
+    <h2 style="margin-top:0">Plantilla legada</h2>
+    <p>Usa el editor actual del panel administrativo.</p>
+    <p><a class="btn" href="{{ url_for('admin_posts') }}">Ir al panel admin</a></p>
   </div>
 {% endblock %}

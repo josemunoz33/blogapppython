@@ -4,13 +4,16 @@ services:
     ports:
       - "8000:8000"
     environment:
-      SECRET_KEY: "change-this-in-real-life"
-      ADMIN_PASSWORD: "admin123"
-      DATABASE_URL: "sqlite:////data/blog.db"
-      FLASK_APP: "app.py"
-      LOG_LEVEL: "INFO"
-      LOG_FORMAT: "json"
-      ENABLE_FILE_LOG: "true"
+      SECRET_KEY: "${SECRET_KEY:-change-this-in-real-life}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-admin123}"
+      DATABASE_URL: "${DATABASE_URL:-sqlite:////data/blog.db}"
+      FLASK_APP: "${FLASK_APP:-app.py}"
+      LOG_LEVEL: "${LOG_LEVEL:-INFO}"
+      LOG_FORMAT: "${LOG_FORMAT:-json}"
+      ENABLE_FILE_LOG: "${ENABLE_FILE_LOG:-true}"
+      AUTO_INIT_DB: "${AUTO_INIT_DB:-true}"
+      AUTO_SEED_DB: "${AUTO_SEED_DB:-true}"
+      SESSION_COOKIE_SECURE: "${SESSION_COOKIE_SECURE:-false}"
     volumes:
       - blogdata:/data
     restart: unless-stopped
