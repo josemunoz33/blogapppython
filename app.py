@@ -947,6 +947,12 @@ def not_found(_error):
 def too_large(_error):
     return render_template("error.html", code=413, message="Request demasiado grande."), 413
 
+@app.route("/test-error-500")
+def test_error_500():
+    # This triggers a ZeroDivisionError
+    app.logger.info("Triggering an intentional 500 error for Better Stack test.")
+    result = 1 / 0
+    return "This will never be seen"
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
