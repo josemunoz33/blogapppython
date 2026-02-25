@@ -586,9 +586,12 @@ def not_found(e):
 def too_large(e):
     return render_template("error.html", code=413, message="Request demasiado grande."), 413
 
-@app.route('/test-db-error')
-def test_db_error():
-    raise Exception("Simulated Database Connection Failure for Better Stack Test")
+@app.route("/test-error-500")
+def test_error_500():
+    # This triggers a ZeroDivisionError
+    app.logger.info("Triggering an intentional 500 error for Better Stack test.")
+    result = 1 / 0
+    return "This will never be seen"
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(e):
